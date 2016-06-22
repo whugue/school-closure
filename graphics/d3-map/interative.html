@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- <body bgcolor="282828"> -->
+<!-- </body> -->
+
+<style>
+
+.counties {
+  fill: none;
+}
+
+.states {
+  fill: none;
+  stroke: #fff;
+  stroke-linejoin: round;
+}
+
+.q0-9 { fill:rgb(240,128,128); }
+.q1-9 { fill:rgb(240,128,128); }
+.q2-9 { fill:rgb(250,128,114); }
+.q3-9 { fill:rgb(250,128,114); }
+.q4-9 { fill:rgb(205,92,92); }
+.q5-9 { fill:rgb(205,92,92); }
+.q6-9 { fill:rgb(178,34,34); }
+.q7-9 { fill:rgb(178,34,34); }
+.q8-9 { fill:rgb(139,0,0); }
+
+
+</style>
+<body>
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script src="//d3js.org/queue.v1.min.js"></script>
+<script src="//d3js.org/topojson.v1.min.js"></script>
+<script>
+
+var width = 960, 
+    height = 600;
+
+
+//Read in D3 Maps
+var nameById = d3.map(), //added
+    schoolById = d3.map(), //added
+    closeById = d3.map(), //added
+    rateById = d3.map();
+
+
+var quantile = d3.scale.quantile()
+    .range(d3.range(9).map(function(i) { return "q" + i + "-9"; }));
+
+var projection = d3.geo.albersUsa()
+    .scale(1280)
+    .translate([width / 2, height / 2]);
+
+var path = d3.geo.path()
+    .projection(projection);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+
+//Create Tip for Mouseover
+tip = d3.tip()
+  .attr("class", "d3-tip")
+  .offset([-10, 0])
+  .direction("n")
+  .html(function(d) { return  
+    "County:             " + nameById.get(d.id) + 
+    "<br/>Schools:       " + schoolById.get(d.id) + 
+    "<br/>Closures:      " + closeById.get(d.id) +
+    "<br/> Closure Rate: " + rateById.get(d.id)*100.toFixed(0) + "%"
+
+});
+svg.call(tip)
+
+
+//Create Map
+queue()
+    .defer(d3.json, "us.json") // use us.json or counties.json?
+    .defer(d3.tsv, "close_rate_bycnty.tsv", function(d) {
+      nameById.set(d.id, d.county_name); //add extra stuff to function
+      schoolById.set(d.id, +d.schools); 
+      rateById.set(d.id, +d.rate);
+      closeById.set(d.id, +d.closures);
+    })
+    .await(ready);
+
+
+function ready(error, us) {
+  if (error) throw error;
+
+  quantile.domain(rateById.values());
+
+  svg.append("g")
+    .attr("class", "counties")
+    .selectAll("path")
+    .data(topojson.feature(us, us.objects.counties).features)
+    .enter().append("path")
+    .attr("class", function(d) { return quantile(rateById.get(d.id)); })
+    .attr("d", path)
+    .on("mouseover", tip.show) //added - show tip on mouseover
+    .on("mouseout", tip.hide); //added - remove tip on mouse away
+
+  svg.append("path")
+      .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+      .attr("class", "states")
+      .attr("d", path);
+}
+
+d3.select(self.frameElement).style("height", height + "px");
+</script>
