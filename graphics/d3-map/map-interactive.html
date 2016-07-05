@@ -1,18 +1,132 @@
-<!-- HTML Code for Interactive School Closure Map -->
+
+<!--Code for Interactive D3 School Closure Map -->
 
 <!DOCTYPE html>
 <meta charset="utf-8">
 
-<link rel="stylesheet" type="text/css" href="map-interactive.css"/>
+<!-- <body bgcolor="282828"> -->
+<!-- </body> -->
+
+<style>
+
+.counties {
+  fill: none;
+}
+
+.states {
+  fill: none;
+  stroke: #fff;
+  stroke-linejoin: round;
+}
+
+.d3-tip {
+  line-height: 1.5;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 0px;
+  text-align: left;
+  font: 12px Arial;
+}
+
+.q0-9 { fill:rgb(240,128,128); }
+.q1-9 { fill:rgb(240,128,128); }
+.q2-9 { fill:rgb(250,128,114); }
+.q3-9 { fill:rgb(250,128,114); }
+.q4-9 { fill:rgb(205,92,92); }
+.q5-9 { fill:rgb(205,92,92); }
+.q6-9 { fill:rgb(178,34,34); }
+.q7-9 { fill:rgb(178,34,34); }
+.q8-9 { fill:rgb(139,0,0); }
+
+}
+.footer, .push {
+height: 4em;
+font: Arial;
+}
+
+</style>
+<body>
 <script src="//d3js.org/d3.v3.min.js"></script>
 <script src="//d3js.org/queue.v1.min.js"></script>
 <script src="//d3js.org/topojson.v1.min.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script>
 
-<body>
-	<script type="text/javascript" src="map-interactive.js"></script>
-	</div>
-	  <div class="footer">
-	      <p>Source : National Center for Education Statistics Common Core of Data, 2009-2015</p>
-	</div>
+var width = 900,
+    height = 600;
+
+var rateById = d3.map(), schoolById = d3.map(), closeById = d3.map(), nameById = d3.map() //add addition maps for d3 tip
+
+var quantile = d3.scale.quantile()
+    .range(d3.range(9).map(function(i) { return "q" + i + "-9"; }));
+
+var projection = d3.geo.albersUsa()
+    .scale(1150)
+    .translate([width / 2, height / 2]);
+
+var path = d3.geo.path()
+    .projection(projection);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+//Define Mouseover Tip
+tip = d3.tip()
+  .attr("class", "d3-tip")
+  .offset([10, 0])
+  .direction("s")
+  .html(function(d) { return nameById.get(d.id) +
+    "<br/>Schools:      " + schoolById.get(d.id) +
+    "<br/>Closures:     " + (closeById.get(d.id)*1).toFixed(0) + 
+    "<br/>Closure Rate: " + (rateById.get(d.id)*100).toFixed(0) + "%"
+  });
+
+svg.call(tip);
+
+//Read in Data & Bind to Map
+queue()
+    .defer(d3.json, "us-map.txt")
+    .defer(d3.tsv, "closures.tsv", function(d) {
+      nameById.set(d.id, d.county_name);
+      schoolById.set(d.id, d.schools);
+      closeById.set(d.id, d.closures);
+      rateById.set(d.id, +d.close_rate); })
+    .await(ready);
+
+function ready(error, us) {
+  if (error) throw error;
+
+  quantile.domain(rateById.values());
+
+  svg.append("g")
+      .attr("class", "counties")
+    .selectAll("path")
+      .data(topojson.feature(us, us.objects.counties).features)
+    .enter().append("path")
+      .attr("class", function(d) { return quantile(rateById.get(d.id)); })
+      .attr("id", function(d) {return d.id})
+      .attr("d", path)
+      .on("mouseover", tip.show)
+      .on("mouseout", tip.hide)
+
+  svg.append("path")
+      .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+      .attr("class", "states")
+      .attr("d", path);
+}
+
+d3.select(self.frameElement).style("height", height + "px");
+</script>
+
+</div>
+  <div class="footer">
+      <p>Source : National Center for Education Statistics Common Core of Data, 2009-2015</p>
+</div>
 </body>
+
+
+
+
+
