@@ -54,7 +54,7 @@ font: Arial;
 <script>
 
 var width = 900,
-    height = 600;
+    height = 700;
 
 var rateById = d3.map(), schoolById = d3.map(), closeById = d3.map(), nameById = d3.map() //add addition maps for d3 tip
 
@@ -75,8 +75,8 @@ var svg = d3.select("body").append("svg")
 //Define Mouseover Tip
 tip = d3.tip()
   .attr("class", "d3-tip")
-  .offset([10, 0])
-  .direction("s")
+  .offset([10, 5])
+  .direction("se")
   .html(function(d) { return nameById.get(d.id) +
     "<br/>Schools:      " + schoolById.get(d.id) +
     "<br/>Closures:     " + (closeById.get(d.id)*1).toFixed(0) + 
