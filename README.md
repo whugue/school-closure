@@ -18,14 +18,14 @@ None of the source or cleaned datafiles are included in this repository. However
 
 
 ### IPython Notebooks and Program Flow:
-1. *school-closure-clean.ipynb*: Import raw NCES CCD and EdFacts data, clean, and engineer features.
-2. *school-closure-classify.ipynb*: Apply various supervised machine learning algorithms from sklearn to predict school closure given performance and demographic characteristics. Evaluate performance of various algorithms in terms of precision-recall tradeoff.
-3. *school-closure-viz.ipynb*: Produce descriptive statistics from cleaned NCES data and compile county-level datafile for d3 maps.
+1. **school-closure-clean.ipynb**: Import raw NCES CCD and EdFacts data, clean, and engineer features.
+2. **school-closure-classify.ipynb**: Apply various supervised machine learning algorithms from sklearn to predict school closure given performance and demographic characteristics. Evaluate performance of various algorithms in terms of precision-recall tradeoff.
+3. **school-closure-viz.ipynb**: Produce descriptive statistics from cleaned NCES data and compile county-level datafile for d3 maps.
 
 
 ###Other Fun Stuff:
-1. *graphics/*: JPG/ PNG of Matplotlib and Seaborn graphics produced for my final presentation and blog post.
-2. *graphics/d3-map/*: Static and Interactive school closure maps showing closure rates across different U.S. counties.
-3. *deck/*: Final powerpoint deck associated with the presentation I gave at Metis on 5/13/2016
+1. **graphics/**: JPG/ PNG of Matplotlib and Seaborn graphics produced for my final presentation and blog post.
+2. **graphics/d3-map/**: Static and Interactive school closure maps showing closure rates across different U.S. counties.
+3. **deck/**: Final powerpoint deck associated with the presentation I gave at Metis on 5/13/2016
 
 
