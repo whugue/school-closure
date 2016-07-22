@@ -1,0 +1,22 @@
+
+/*Stylesheet for Static School Closure Map*/
+
+.counties {
+	fill: none;
+}
+
+.states {
+  fill: none;
+  stroke: #fff;
+  stroke-linejoin: round;
+}
+
+.q0-9 { fill:rgb(240,128,128); }
+.q1-9 { fill:rgb(240,128,128); }
+.q2-9 { fill:rgb(250,128,114); }
+.q3-9 { fill:rgb(250,128,114); }
+.q4-9 { fill:rgb(205,92,92); }
+.q5-9 { fill:rgb(205,92,92); }
+.q6-9 { fill:rgb(178,34,34); }
+.q7-9 { fill:rgb(178,34,34); }
+.q8-9 { fill:rgb(139,0,0); }

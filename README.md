@@ -9,7 +9,6 @@ Full discussion in my blog post [here](http://www.huguedata.com/2016/05/21/predi
 * Pandas
 * Matplotlib
 * Seaborn
-* Collections
 * Sklearn
 
 
