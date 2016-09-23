@@ -17,9 +17,9 @@ None of the source or cleaned datafiles are included in this repository. However
 
 
 ### IPython Notebooks and Program Flow:
-1. *school-closure-clean.ipynb*: Import raw NCES CCD and EdFacts data, clean, and engineer features.
-2. *school-closure-classify.ipynb*: Apply various supervised machine learning algorithms from sklearn to predict school closure given performance and demographic characteristics. Evaluate performance of various algorithms in terms of precision-recall tradeoff.
-3. *school-closure-viz.ipynb*: Produce descriptive statistics from cleaned NCES data and compile county-level datafile for d3 maps.
+1. *01-school-closure-clean.ipynb*: Import raw NCES CCD and EdFacts data, clean, and engineer features.
+2. *02-school-closure-classify.ipynb*: Apply various supervised machine learning algorithms from sklearn to predict school closure given performance and demographic characteristics. Evaluate performance of various algorithms in terms of precision-recall tradeoff.
+3. *03-chool-closure-viz.ipynb*: Produce descriptive statistics from cleaned NCES data and compile county-level datafile for d3 maps.
 
 
 ###Other Fun Stuff:
