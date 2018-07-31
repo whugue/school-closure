@@ -15,9 +15,3 @@ Program 	| Description |
 02-school-closure-classify.ipynb | Predict school closures based onperformance and demographic characteristics.
 03-chool-closure-viz.ipynb | Produce descriptive statistics from cleaned NCES data and compile county-level datafile for d3 maps.
 
-
-### Dependencies
-NumPy, Pandas, Sci-Kit Learn, Matplotlib, Seaborn
-
-
-
